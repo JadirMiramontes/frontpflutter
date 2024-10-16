@@ -4,6 +4,8 @@ import 'package:front/services/auth_services.dart';
 import 'package:front/services/notifications_services.dart';
 import 'package:provider/provider.dart';
 
+//Verificar la conexion con github
+
 class LoginScreen extends StatelessWidget{
   const LoginScreen({super.key});
 
