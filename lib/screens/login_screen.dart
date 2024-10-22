@@ -28,7 +28,7 @@ class _LoginForm extends StatefulWidget {
 class _LoginFormState extends State<_LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _obscureText = true; // Controla si la contraseña está oculta o visible
+  bool _obscurePassword = true; // Controla si la contraseña está oculta o visible
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class _LoginFormState extends State<_LoginForm> {
                   height: size.height * 0.05,
                   alignment: Alignment.center,
                 ),
-                TextFormField(
+                TextFormField( //CAMPO DEL CORREO
                   autocorrect: false,
                   keyboardType: TextInputType.emailAddress,
                   controller: _emailController,
@@ -80,10 +80,10 @@ class _LoginFormState extends State<_LoginForm> {
                     return regExp.hasMatch(value ?? '') ? null : 'El valor ingresado no es un correo válido';
                   },
                 ),
-                TextFormField(
+                TextFormField( //CAMPO DE LA CONTRASEÑA
                   autocorrect: false,
                   controller: _passwordController,
-                  obscureText: _obscureText, // Control de visibilidad de la contraseña
+                  obscureText: _obscurePassword, // Control de visibilidad de la contraseña
                   decoration: InputDecoration(
                     hintText: '********',
                     labelText: 'Password',
@@ -94,12 +94,12 @@ class _LoginFormState extends State<_LoginForm> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
                         color: Color.fromARGB(255, 253, 246, 246),
                       ),
                       onPressed: () {
                         setState(() {
-                          _obscureText = !_obscureText; // Alterna la visibilidad
+                          _obscurePassword = !_obscurePassword; // Alterna la visibilidad
                         });
                       },
                     ),
