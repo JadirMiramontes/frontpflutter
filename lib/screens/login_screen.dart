@@ -4,8 +4,6 @@ import 'package:front/services/auth_services.dart';
 import 'package:front/services/notifications_services.dart';
 import 'package:provider/provider.dart';
 
-//Verificar github y el nuevo branch
-
 class LoginScreen extends StatelessWidget{
   const LoginScreen({super.key});
 
@@ -22,19 +20,22 @@ class LoginScreen extends StatelessWidget{
   }
 }
 
-class _LoginForm extends StatelessWidget{
+class _LoginForm extends StatefulWidget {
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<_LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _obscureText = true; // Controla si la contraseña está oculta o visible
 
-  _LoginForm();
-
-    @override
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
-    //creamos instancia del loginfromprovider que ya tenemos hecho
     final loginForm = Provider.of<LoginFormProvider>(context);
-return Center(
+
+    return Center(
       child: Scaffold(
         body: DecoratedBox(
           decoration: const BoxDecoration(
@@ -46,15 +47,13 @@ return Center(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 16, ),
+                const SizedBox(height: 16),
                 Container(
                   width: size.width * 0.80,
                   height: size.height * 0.17,
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(
-                    //todo: poner image
-                    //image: decorationimage(image: ...)
-                    //es por si va una imagen en la parte de arriibita de, box
+                    // Agregar imagen si es necesario
                   ),
                 ),
                 Container(
@@ -63,7 +62,7 @@ return Center(
                   alignment: Alignment.center,
                 ),
                 TextFormField(
-                  autocorrect: false, //sin autocorrector pq es el correo,
+                  autocorrect: false,
                   keyboardType: TextInputType.emailAddress,
                   controller: _emailController,
                   decoration: const InputDecoration(
@@ -72,91 +71,97 @@ return Center(
                     labelStyle: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
-                      color: Color.fromARGB(255, 255, 244, 244)
+                      color: Color.fromARGB(255, 255, 244, 244),
                     ),
                   ),
-                  validator: (value){
+                  validator: (value) {
                     String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
                     RegExp regExp = RegExp(pattern);
-                    return regExp.hasMatch(value ?? '') ? null : 'El valor ingresado no es un correo';
+                    return regExp.hasMatch(value ?? '') ? null : 'El valor ingresado no es un correo válido';
                   },
                 ),
                 TextFormField(
                   autocorrect: false,
                   controller: _passwordController,
-                  obscureText: true, //tapa loq  escribes ,
-                  decoration: const InputDecoration(
+                  obscureText: _obscureText, // Control de visibilidad de la contraseña
+                  decoration: InputDecoration(
                     hintText: '********',
                     labelText: 'Password',
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
-                      color: Color.fromARGB(255, 253, 246, 246)
-                    )
+                      color: Color.fromARGB(255, 253, 246, 246),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                        color: Color.fromARGB(255, 253, 246, 246),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText; // Alterna la visibilidad
+                        });
+                      },
+                    ),
                   ),
-                  validator: (value){
-                    return (value != null && value.length >= 8) ? null : 'La contrasenia debe ser mayor a 7 caracteres';
+                  validator: (value) {
+                    return (value != null && value.length >= 8) ? null : 'La contraseña debe tener al menos 8 caracteres';
                   },
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 16),
                 TextButton(
-                  onPressed: (){}, 
-                  child: const Text('Olvidaste tu contrasenia?', 
-                    style: TextStyle(color: Color.fromARGB(255, 255, 244, 244))
-                  ), 
+                  onPressed: () {},
+                  child: const Text(
+                    '¿Olvidaste tu contraseña?',
+                    style: TextStyle(color: Color.fromARGB(255, 255, 244, 244)),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: loginForm.isLoading ? null : () async {
                     final authService = Provider.of<AuthServices>(context, listen: false);
-                    //if(!loginForm.isValidForm()) return;
 
                     final String? errorMessage = await authService.login(
-                      //loginForm.email, loginForm.password
-                      _emailController.text, _passwordController.text
+                      _emailController.text,
+                      _passwordController.text,
                     );
 
-                    if(errorMessage == null){
+                    if (errorMessage == null) {
                       Navigator.pushReplacementNamed(context, 'home');
-                    }
-                    else {
+                    } else {
                       NotificationsServices.showSnackbar(errorMessage);
                       loginForm.isLoading = false;
                     }
-                  }, 
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromARGB(255, 181, 184, 187)
-                    )
+                      const Color.fromARGB(255, 181, 184, 187),
+                    ),
                   ),
                   child: const Text(
-                    'Iniciar sesion',
+                    'Iniciar sesión',
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w500,
-                      color: Color.fromARGB(255, 250, 253, 247)
-                    )
-                  )
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                ElevatedButton(
-                  style:  ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromARGB(255, 173, 171, 171),
-                    )
+                      color: Color.fromARGB(255, 250, 253, 247),
+                    ),
                   ),
-                  onPressed: (){
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      const Color.fromARGB(255, 173, 171, 171),
+                    ),
+                  ),
+                  onPressed: () {
                     Navigator.pushReplacementNamed(context, 'register', arguments: '');
                   },
                   child: const Text(
-                    'Registrate',
+                    'Regístrate',
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w500,
-                      color: Color.fromARGB(255, 96, 108, 93)
+                      color: Color.fromARGB(255, 96, 108, 93),
                     ),
                   ),
                 ),
