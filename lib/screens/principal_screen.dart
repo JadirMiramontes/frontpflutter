@@ -3,9 +3,14 @@ import 'package:front/services/auth_services.dart';
 import 'package:front/services/notifications_services.dart';
 import 'package:provider/provider.dart';
 
-class PrincipalScreen extends StatelessWidget {
+class PrincipalScreen extends StatefulWidget {
   const PrincipalScreen({super.key});
 
+  @override
+  State<PrincipalScreen> createState() => _PrincipalScreenState();
+}
+
+class _PrincipalScreenState extends State<PrincipalScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,6 +64,38 @@ class PrincipalScreen extends StatelessWidget {
             )
           ),
         ),
+        drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 248, 188, 58),
+              ),
+              child: Text('Opciones'),
+            ),
+            ListTile(
+              title: const Text('Inicio'),
+              onTap: () {
+                Navigator.pushNamed(context, 'home', arguments: '');
+                //Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Notas'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Calendario'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
       ),
     );
   }
