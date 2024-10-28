@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front/providers/login_from_provider.dart'; 
+import 'package:front/providers/login_from_provider.dart';
 import 'package:front/services/auth_services.dart';
 import 'package:front/services/notifications_services.dart';
 import 'package:provider/provider.dart';
@@ -14,19 +14,19 @@ class RegistroScreen extends StatefulWidget {
 class _RegistroScreenState extends State<RegistroScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  // Variable para controlar la visibilidad de la contraseña
   bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
-    //final loginForm = Provider.of<LoginFormProvider>(context);
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: DecoratedBox(
+      body: Container(
         decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 192, 131, 51),
+          image: DecorationImage(
+            image: AssetImage("lib/img/registrofondo.jpg"), // Ruta de la imagen de fondo
+            fit: BoxFit.cover, // Ajuste para cubrir toda la pantalla
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -38,33 +38,40 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 width: size.width * 0.80,
                 height: size.height * 0.17,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  //todo: agregar una imagen
-                ),
               ),
               Container(
                 width: size.width * 0.80,
                 height: size.height * 0.05,
                 alignment: Alignment.center,
               ),
-              TextField( //CAMPO DEL CORREO
+              TextField( // Campo de correo electrónico
                 controller: _emailController,
+                style: const TextStyle(color: Colors.white), // Texto de color blanco
                 decoration: const InputDecoration(
                   hintText: 'ejemplo@email.com',
+                  hintStyle: TextStyle(color: Colors.white70), // Hint de color blanco tenue
                   labelText: 'Email',
                   labelStyle: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     color: Color.fromARGB(255, 255, 244, 244),
                   ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white), // Borde de color blanco
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white), // Borde de color blanco al enfocarse
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
-              TextField( //CAMPO DE LA CONTRASEÑA
+              TextField( // Campo de contraseña
                 controller: _passwordController,
-                obscureText: _obscurePassword, // Controla si la contraseña está oculta o visible
+                obscureText: _obscurePassword,
+                style: const TextStyle(color: Colors.white), // Texto de color blanco
                 decoration: InputDecoration(
                   hintText: '*****',
+                  hintStyle: const TextStyle(color: Colors.white70), // Hint de color blanco tenue
                   labelText: 'Contraseña',
                   labelStyle: const TextStyle(
                     fontSize: 20,
@@ -78,9 +85,15 @@ class _RegistroScreenState extends State<RegistroScreen> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _obscurePassword = !_obscurePassword; // Alterna la visibilidad
+                        _obscurePassword = !_obscurePassword;
                       });
                     },
+                  ),
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white), // Borde de color blanco
+                  ),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white), // Borde de color blanco al enfocarse
                   ),
                 ),
               ),
@@ -88,10 +101,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
               TextButton(
                 onPressed: () {},
                 child: const Text(
-                  'Olvidaste tu contraseña?',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 255, 244, 244),
-                  ),
+                  '¿Olvidaste tu contraseña?',
+                  style: TextStyle(color: Color.fromARGB(255, 255, 244, 244)),
                 ),
               ),
               ElevatedButton(
@@ -126,14 +137,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
-                  print('Botón iniciar sesión');
                   Navigator.pushNamed(context, 'login', arguments: '');
                 },
                 child: const Text(
-                  'Ya tienes una cuenta? Iniciar sesión',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 255, 244, 244),
-                  ),
+                  '¿Ya tienes una cuenta? Iniciar sesión',
+                  style: TextStyle(color: Color.fromARGB(255, 255, 244, 244)),
                 ),
               ),
             ],
