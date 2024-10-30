@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/screens/checking_screen.dart';
+import 'package:front/screens/digimonsearch_screen.dart';
 import 'package:front/screens/login_screen.dart';
 import 'package:front/screens/principal_screen.dart';
 import 'package:front/screens/registro_screen.dart';
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
         'login' : (_) => LoginScreen(),
         'register': (_) => RegistroScreen(),
         'home': (_) => PrincipalScreen(),
-        'checking': (_) => CheckAuthScreen()
+        'checking': (_) => CheckAuthScreen(),
+        'digimonsearch': (_) => DigimonSearchScreen()
       },
       scaffoldMessengerKey: NotificationsServices.messengerKey
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/screens/digimonsearch_screen.dart';
 import 'package:front/services/auth_services.dart';
 import 'package:provider/provider.dart';
 
@@ -76,6 +77,16 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
               ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DigimonSearchScreen()),
+            );
+          },
+          child: const Icon(Icons.search),
+          backgroundColor: Colors.blue,
         ),
       ),
     );
