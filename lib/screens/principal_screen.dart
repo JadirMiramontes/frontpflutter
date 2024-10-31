@@ -19,13 +19,13 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
         appBar: AppBar(
           title: const Text('Login App')
         ),
-        body: Center(
+        body: const Center(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const [
+              children: [
                 SizedBox(),
               ],
             ),

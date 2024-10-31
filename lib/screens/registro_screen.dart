@@ -121,7 +121,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   }
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
+                  backgroundColor: WidgetStateProperty.all<Color>(
                     const Color.fromARGB(255, 181, 184, 187),
                   ),
                 ),
