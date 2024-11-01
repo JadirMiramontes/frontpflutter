@@ -17,7 +17,7 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
       title: 'Login',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Login App')
+          backgroundColor: Color.fromARGB(253, 252, 147, 11),
         ),
         body: const Center(
           child: Padding(
@@ -37,9 +37,9 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
             children: [
               const DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 248, 188, 58),
+                  color: Color.fromARGB(253, 252, 147, 11),
                 ),
-                child: Text('Opciones'),
+                child: Text('MENU'),
               ),
               ListTile(
                 title: const Text('Inicio'),
@@ -86,7 +86,7 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
             );
           },
           child: const Icon(Icons.search),
-          backgroundColor: Colors.blue,
+          backgroundColor: Color.fromARGB(253, 252, 147, 11),
         ),
       ),
     );
