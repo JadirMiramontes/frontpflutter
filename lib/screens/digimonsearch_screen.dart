@@ -126,24 +126,26 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
               if (_digimonNames != null) ...[
                 const SizedBox(height: 20),
                 ...List.generate(_digimonNames!.length, (index) {
-                  return Column(
-                    children: [
-                      Text(
-                        'Nombre: ${_digimonNames![index]}',
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      if (_digimonImages != null) ...[
-                        Image.network(_digimonImages![index]),
-                        const SizedBox(height: 10),
-                      ],
-                      if (_digimonLevels != null) ...[
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0), // Espacio de 10 píxeles entre cada Digimon
+                    child: Column(
+                      children: [
                         Text(
-                          'Nivel: ${_digimonLevels![index]}',
+                          'Nombre: ${_digimonNames![index]}',
                           style: const TextStyle(fontSize: 20),
                         ),
+                        if (_digimonLevels != null) ...[
+                          Text(
+                            'Nivel: ${_digimonLevels![index]}',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ],
+                        if (_digimonImages != null) ...[
+                          Image.network(_digimonImages![index]),
+                          const SizedBox(height: 10),
+                        ],
                       ],
-                      const SizedBox(height: 20),
-                    ],
+                    ),
                   );
                 }),
               ],
