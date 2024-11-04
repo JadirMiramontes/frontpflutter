@@ -125,39 +125,27 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
               ),
               if (_digimonNames != null) ...[
                 const SizedBox(height: 20),
-                Wrap(
-                  spacing: 20, // Espacio horizontal entre columnas
-                  runSpacing: 20, // Espacio vertical entre filas
-                  alignment: WrapAlignment.center,
-                  children: List.generate(_digimonNames!.length, (index) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width / 2 - 30, // Divide el ancho en dos columnas
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Nombre: ${_digimonNames![index]}',
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          if (_digimonImages != null) ...[
-                            Image.network(
-                              _digimonImages![index],
-                              width: 100,
-                              height: 100,
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                          if (_digimonLevels != null) ...[
-                            Text(
-                              'Nivel: ${_digimonLevels![index]}',
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ],
+                ...List.generate(_digimonNames!.length, (index) {
+                  return Column(
+                    children: [
+                      Text(
+                        'Nombre: ${_digimonNames![index]}',
+                        style: const TextStyle(fontSize: 20),
                       ),
-                    );
-                  }),
-                ),
+                      if (_digimonImages != null) ...[
+                        Image.network(_digimonImages![index]),
+                        const SizedBox(height: 10),
+                      ],
+                      if (_digimonLevels != null) ...[
+                        Text(
+                          'Nivel: ${_digimonLevels![index]}',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ],
+                      const SizedBox(height: 20),
+                    ],
+                  );
+                }),
               ],
             ],
           ),
