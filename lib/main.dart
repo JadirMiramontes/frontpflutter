@@ -4,7 +4,6 @@ import 'package:front/screens/digimonsearch_screen.dart';
 import 'package:front/screens/login_screen.dart';
 import 'package:front/screens/principal_screen.dart';
 import 'package:front/screens/registro_screen.dart';
-import 'package:front/screens/user_profile_screen.dart'; // Importa la pantalla de perfil
 import 'package:front/services/auth_services.dart';
 import 'package:front/services/notifications_services.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +47,6 @@ class MyApp extends StatelessWidget {
         'home': (_) => PrincipalScreen(),
         'checking': (_) => CheckAuthScreen(),
         'digimonsearch': (_) => DigimonSearchScreen(),
-        'profile': (_) => UserProfileScreen(), // Ruta para la pantalla de perfil
       },
       scaffoldMessengerKey: NotificationsServices.messengerKey,
     );
