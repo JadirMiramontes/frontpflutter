@@ -102,15 +102,9 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
                 },
               ),
               ListTile(
-                title: const Text('Notas'),
+                title: const Text('Usuario'),
                 onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text('Calendario'),
-                onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, 'profile', arguments: '');
                 },
               ),
               ListTile(
