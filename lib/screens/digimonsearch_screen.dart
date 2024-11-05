@@ -65,6 +65,15 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
     });
   }
 
+  // Nueva función para limpiar los campos
+  void _clearFields() {
+    _controller.clear(); // Limpiar el TextField
+    setState(() {
+      _selectedLevel = null; // Restablecer el nivel seleccionado
+    });
+    _clearResults(); // Limpiar los resultados de búsqueda
+  }
+
   void _search() {
     if (_controller.text.isNotEmpty) {
       _searchDigimonByName(_controller.text);
@@ -119,9 +128,19 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
                 }).toList(),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _search,
-                child: const Text('Buscar'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: _search,
+                    child: const Text('Buscar'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: _clearFields,
+                    child: const Text('Limpiar'),
+                  ),
+                ],
               ),
               if (_digimonNames != null) ...[
                 const SizedBox(height: 20),
