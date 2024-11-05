@@ -102,9 +102,9 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
                 },
               ),
               ListTile(
-                title: const Text('Usuario'),
+                title: const Text('Perfil de Usuario'),
                 onTap: () {
-                  Navigator.pushNamed(context, 'profile', arguments: '');
+                  Navigator.pushNamed(context, 'userinfo', arguments: '');
                 },
               ),
               ListTile(
