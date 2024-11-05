@@ -11,22 +11,76 @@ class PrincipalScreen extends StatefulWidget {
 }
 
 class _PrincipalScreenState extends State<PrincipalScreen> {
+  List<Map<String, String>> _favoriteDigimons = [];
+
+  void _navigateToSearch() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const DigimonSearchScreen()),
+    );
+
+    if (result != null && result is List<Map<String, String>>) {
+      setState(() {
+        _favoriteDigimons = _removeDuplicates(result);
+      });
+    }
+  }
+
+  List<Map<String, String>> _removeDuplicates(List<Map<String, String>> favorites) {
+    final seen = <String>{}; // Usamos un conjunto para rastrear los nombres vistos
+    return favorites.where((digimon) {
+      final isDuplicate = seen.contains(digimon['name']);
+      seen.add(digimon['name']!); // Agregamos el nombre al conjunto
+      return !isDuplicate; // Solo mantenemos los que no son duplicados
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login',
+      title: 'Principal Screen',
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(253, 252, 147, 11),
+          title: const Text('Pantalla Principal'),
+          backgroundColor: const Color.fromARGB(253, 252, 147, 11),
         ),
-        body: const Center(
+        body: Center(
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(),
+                if (_favoriteDigimons.isNotEmpty) ...[
+                  const Text(
+                    'Digimons Favoritos',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _favoriteDigimons.length,
+                      itemBuilder: (context, index) {
+                        final digimon = _favoriteDigimons[index];
+                        return ListTile(
+                          leading: Image.network(
+                            digimon['img'] ?? '',
+                            width: 50,
+                            height: 50,
+                          ),
+                          title: Text(digimon['name'] ?? ''),
+                          subtitle: Text(digimon['level'] ?? ''),
+                        );
+                      },
+                    ),
+                  ),
+                ] else ...[
+                  const Text(
+                    'No hay Digimons favoritos seleccionados',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
               ],
             ),
           ),
@@ -63,9 +117,7 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
                 title: const Text('Cerrar sesión'),
                 onTap: () async {
                   final authService = Provider.of<AuthServices>(context, listen: false);
-
                   await authService.logout();
-
                   final token = await authService.storage.read(key: "token");
                   
                   if (token == null) {
@@ -79,14 +131,9 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DigimonSearchScreen()),
-            );
-          },
+          onPressed: _navigateToSearch,
           child: const Icon(Icons.search),
-          backgroundColor: Color.fromARGB(253, 252, 147, 11),
+          backgroundColor: const Color.fromARGB(253, 252, 147, 11),
         ),
       ),
     );

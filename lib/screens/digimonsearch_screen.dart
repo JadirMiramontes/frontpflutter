@@ -14,10 +14,9 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
   List<String>? _digimonNames;
   List<String>? _digimonImages;
   List<String>? _digimonLevels;
-
-  // Lista de niveles disponibles
   final List<String> _levels = ['Rookie', 'Champion', 'Ultimate', 'Mega'];
   String? _selectedLevel;
+  Set<Map<String, String>> _favoriteDigimons = {};
 
   Future<void> _searchDigimonByName(String name) async {
     final response = await http.get(Uri.parse('https://digimon-api.vercel.app/api/digimon/name/$name'));
@@ -65,13 +64,12 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
     });
   }
 
-  // Nueva función para limpiar los campos
   void _clearFields() {
-    _controller.clear(); // Limpiar el TextField
+    _controller.clear();
     setState(() {
-      _selectedLevel = null; // Restablecer el nivel seleccionado
+      _selectedLevel = null;
     });
-    _clearResults(); // Limpiar los resultados de búsqueda
+    _clearResults();
   }
 
   void _search() {
@@ -145,13 +143,39 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
               if (_digimonNames != null) ...[
                 const SizedBox(height: 20),
                 ...List.generate(_digimonNames!.length, (index) {
+                  final name = _digimonNames![index];
+                  final isFavorite = _favoriteDigimons.any((d) => d['name'] == name);
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0), // Espacio de 10 píxeles entre cada Digimon
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Column(
                       children: [
-                        Text(
-                          'Nombre: ${_digimonNames![index]}',
-                          style: const TextStyle(fontSize: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Nombre: $name',
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                isFavorite ? Icons.favorite : Icons.favorite_border,
+                                color: isFavorite ? Colors.red : Colors.grey,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  if (isFavorite) {
+                                    _favoriteDigimons.removeWhere((d) => d['name'] == name);
+                                  } else {
+                                    _favoriteDigimons.add({
+                                      'name': name,
+                                      'level': _digimonLevels![index],
+                                      'img': _digimonImages![index]
+                                    });
+                                  }
+                                });
+                              },
+                            ),
+                          ],
                         ),
                         if (_digimonLevels != null) ...[
                           Text(
@@ -171,6 +195,12 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(context, _favoriteDigimons.toList());
+        },
+        child: const Icon(Icons.arrow_back),
       ),
     );
   }
