@@ -15,22 +15,23 @@ class UserInfoScreen extends StatelessWidget {
         title: const Text('Información del Usuario'),
       ),
       body: FutureBuilder<String>(
-        future: authService.readToken(), // Aquí leemos el token
+        future: authService.readToken(), // Lee el token
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error al obtener datos del usuario'));
+            return const Center(child: Text('Error al obtener datos del usuario'));
           }
           final token = snapshot.data;
           if (token == null || token.isEmpty) {
-            return Center(child: Text('No hay información del usuario disponible.'));
+            return const Center(child: Text('No hay información del usuario disponible.'));
           }
 
-          // Decodificamos el token JWT para obtener el email
+          // Decodifica el token JWT para obtener email y NombreUsuario
           final decodedToken = JwtDecoder.decode(token);
           final email = decodedToken['email'] ?? 'Email no disponible';
+          final nombreUsuario = decodedToken['NombreUsuario'] ?? 'Nombre no disponible';
 
           return Center(
             child: Column(
@@ -38,9 +39,13 @@ class UserInfoScreen extends StatelessWidget {
               children: [
                 Text(
                   'Email: $email',
-                  style: TextStyle(fontSize: 24),
+                  style: const TextStyle(fontSize: 24),
                 ),
-                // Puedes agregar más información si deseas
+                const SizedBox(height: 10),
+                Text(
+                  'Nombre de usuario: $nombreUsuario',
+                  style: const TextStyle(fontSize: 24),
+                ),
                 const SizedBox(height: 20),
                 const Text(
                   'Puedes agregar más información aquí.',
