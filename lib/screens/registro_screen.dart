@@ -14,6 +14,7 @@ class RegistroScreen extends StatefulWidget {
 class _RegistroScreenState extends State<RegistroScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nombreUsuarioController = TextEditingController(); // Agregado para el nombre de usuario
   bool _obscurePassword = true;
 
   @override
@@ -51,6 +52,29 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         height: size.height * 0.05,
                         alignment: Alignment.center,
                       ),
+                      // Campo de Nombre de Usuario
+                      TextField(
+                        controller: _nombreUsuarioController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          hintText: 'Tu nombre de usuario',
+                          hintStyle: TextStyle(color: Colors.white70),
+                          labelText: 'Nombre de Usuario',
+                          labelStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(255, 255, 244, 244),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Campo de correo electrónico
                       TextField(
                         controller: _emailController,
                         style: const TextStyle(color: Colors.white),
@@ -72,6 +96,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
+                      // Campo de contraseña
                       TextField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
@@ -128,9 +153,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           }
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromARGB(255, 181, 184, 187),
-                          ),
+                          backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 181, 184, 187)),
                         ),
                         child: const Text(
                           'Registra tu usuario',
