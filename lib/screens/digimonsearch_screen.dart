@@ -85,6 +85,7 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Buscar Digimons'),
+        backgroundColor: const Color.fromARGB(253, 252, 147, 11),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -201,6 +202,7 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
           Navigator.pop(context, _favoriteDigimons.toList());
         },
         child: const Icon(Icons.arrow_back),
+        backgroundColor: Color.fromARGB(253, 252, 147, 11),
       ),
     );
   }
