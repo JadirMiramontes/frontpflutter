@@ -13,6 +13,7 @@ class UserInfoScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Información del Usuario'),
+        backgroundColor: const Color.fromARGB(253, 252, 147, 11),
       ),
       body: FutureBuilder<String>(
         future: authService.readToken(), // Lee el token
@@ -47,10 +48,6 @@ class UserInfoScreen extends StatelessWidget {
                   style: const TextStyle(fontSize: 24),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Puedes agregar más información aquí.',
-                  style: TextStyle(fontSize: 16),
-                ),
               ],
             ),
           );
