@@ -56,20 +56,22 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       TextField(
                         controller: _nombreUsuarioController,
                         style: const TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           hintText: 'Tu nombre de usuario',
-                          hintStyle: TextStyle(color: Colors.white70),
+                          hintStyle: const TextStyle(color: Colors.white70),
                           labelText: 'Nombre de Usuario',
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                             color: Color.fromARGB(255, 255, 244, 244),
                           ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white)
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 206, 73, 211), width: 2.0),
                           ),
                         ),
                       ),
@@ -78,20 +80,22 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       TextField(
                         controller: _emailController,
                         style: const TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           hintText: 'ejemplo@email.com',
-                          hintStyle: TextStyle(color: Colors.white70),
+                          hintStyle: const TextStyle(color: Colors.white70),
                           labelText: 'Email',
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                             color: Color.fromARGB(255, 255, 244, 244),
                           ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white)
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 206, 73, 211), width: 2.0),
                           ),
                         ),
                       ),
@@ -113,7 +117,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                              color: const Color.fromARGB(255, 255, 244, 244),
+                              color: const Color.fromARGB(255, 255, 244, 255),
                             ),
                             onPressed: () {
                               setState(() {
@@ -121,11 +125,13 @@ class _RegistroScreenState extends State<RegistroScreen> {
                               });
                             },
                           ),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white)
                           ),
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 206, 73, 211), width: 2.0),
                           ),
                         ),
                       ),
@@ -153,7 +159,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           }
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 181, 184, 187)),
+                          backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 206, 73, 211)),
                         ),
                         child: const Text(
                           'Registra tu usuario',
