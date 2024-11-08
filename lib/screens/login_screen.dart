@@ -67,15 +67,23 @@ class _LoginFormState extends State<_LoginForm> {
                   keyboardType: TextInputType.emailAddress,
                   controller: _emailController,
                   style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    hintText: 'ejemplo@cola.com',
-                    labelText: 'Email',
-                    labelStyle: TextStyle(
+                  decoration: InputDecoration(
+                    hintText: 'ejemplo@gmail.com',
+                    labelText: 'CORREO ELECTRONICO',
+                    labelStyle: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                       color: Color.fromARGB(255, 255, 244, 244),
                     ),
-                    hintStyle: TextStyle(color: Colors.white70),
+                    hintStyle: const TextStyle(color: Colors.white70),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.white)
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.orange, width: 2.0),
+                    ),
                   ),
                   validator: (value) {
                     String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -83,6 +91,7 @@ class _LoginFormState extends State<_LoginForm> {
                     return regExp.hasMatch(value ?? '') ? null : 'El valor ingresado no es un correo válido';
                   },
                 ),
+                SizedBox(height: 10),
                 TextFormField(
                   autocorrect: false,
                   controller: _passwordController,
@@ -90,13 +99,21 @@ class _LoginFormState extends State<_LoginForm> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: '********',
-                    labelText: 'Password',
+                    labelText: 'CONTRASEÑA',
                     labelStyle: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                       color: Color.fromARGB(255, 253, 246, 246),
                     ),
                     hintStyle: const TextStyle(color: Colors.white70),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.white)
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.orange, width: 2.0),
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscurePassword ? Icons.visibility : Icons.visibility_off,
@@ -139,7 +156,7 @@ class _LoginFormState extends State<_LoginForm> {
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color.fromARGB(255, 181, 184, 187),
+                      const Color.fromARGB(253, 252, 147, 11),
                     ),
                   ),
                   child: const Text(
@@ -155,7 +172,7 @@ class _LoginFormState extends State<_LoginForm> {
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color.fromARGB(255, 173, 171, 171),
+                      const Color.fromARGB(253, 252, 147, 11),
                     ),
                   ),
                   onPressed: () {
@@ -166,7 +183,7 @@ class _LoginFormState extends State<_LoginForm> {
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w500,
-                      color: Color.fromARGB(255, 96, 108, 93),
+                      color: Color.fromARGB(255, 250, 253, 247),
                     ),
                   ),
                 ),
