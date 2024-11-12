@@ -5,7 +5,7 @@ import 'package:front/services/notifications_services.dart';
 import 'package:provider/provider.dart';
 
 class RegistroScreen extends StatefulWidget {
-  RegistroScreen({super.key});
+  const RegistroScreen({super.key});
 
   @override
   State<RegistroScreen> createState() => _RegistroScreenState();
@@ -14,7 +14,7 @@ class RegistroScreen extends StatefulWidget {
 class _RegistroScreenState extends State<RegistroScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _nombreUsuarioController = TextEditingController(); // Agregado para el nombre de usuario
+  final TextEditingController _nombreUsuarioController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
@@ -29,7 +29,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        child: LayoutBuilder( // Envuelve en LayoutBuilder para controlar el espacio
+        child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
@@ -67,11 +67,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white)
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Color.fromARGB(255, 206, 73, 211), width: 2.0),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 206, 73, 211), width: 2.0),
                           ),
                         ),
                       ),
@@ -91,11 +91,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white)
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Color.fromARGB(255, 206, 73, 211), width: 2.0),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 206, 73, 211), width: 2.0),
                           ),
                         ),
                       ),
@@ -127,11 +127,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white)
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Color.fromARGB(255, 206, 73, 211), width: 2.0),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 206, 73, 211), width: 2.0),
                           ),
                         ),
                       ),
@@ -150,6 +150,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           final String? errorMessage = await authService.createUser(
                             _emailController.text,
                             _passwordController.text,
+                            _nombreUsuarioController.text, // Pasa el nombre de usuario correctamente
                           );
 
                           if (errorMessage == null) {

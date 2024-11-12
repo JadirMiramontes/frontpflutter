@@ -11,10 +11,11 @@ class AuthServices extends ChangeNotifier {
   String? _userName;
   String? get userName => _userName;
 
-  Future<String?> createUser(String email, String password) async {
+  Future<String?> createUser(String email, String password, String nombreUsuario) async {
     final Map<String, dynamic> authData = {
       'Email': email,
-      'Password': password
+      'Password': password,
+      'NombreUsuario': nombreUsuario, // Correctamente agrega el nombre de usuario
     };
 
     final url = Uri.http(_baseUrl, '/api/Cuentas/Registrar');
@@ -33,10 +34,13 @@ class AuthServices extends ChangeNotifier {
         return decodeResp2[0]['description'];
       }
     }
+
     decodeResp = json.decode(resp.body);
 
     if (decodeResp.containsKey('token')) {
       await storage.write(key: 'token', value: decodeResp['token']);
+      _userName = nombreUsuario; // Almacena el nombre de usuario localmente
+      notifyListeners();
       return null;
     } else if (decodeResp.containsKey('errors')) {
       final errors = decodeResp['errors'];
@@ -51,13 +55,14 @@ class AuthServices extends ChangeNotifier {
     } else {
       return decodeResp['error'];
     }
+
     return null;
   }
 
   Future<String?> login(String email, String password) async {
     final Map<String, dynamic> authData = {
       'Email': email,
-      'Password': password
+      'Password': password,
     };
 
     final url = Uri.http(_baseUrl, '/api/Cuentas/Login');
@@ -72,7 +77,7 @@ class AuthServices extends ChangeNotifier {
       final decodeResp = json.decode(resp.body);
       if (decodeResp.containsKey('token')) {
         await storage.write(key: 'token', value: decodeResp['token']);
-        _userName = decodeResp['userName'] ?? 'Usuario';
+        _userName = decodeResp['userName'] ?? 'Usuario'; // Recupera el nombre de usuario si está presente
         notifyListeners();
         return null;
       }
