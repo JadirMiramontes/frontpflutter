@@ -32,10 +32,7 @@ class UserInfoScreen extends StatelessWidget {
           // Decodifica el token JWT para obtener email y NombreUsuario
           final decodedToken = JwtDecoder.decode(token);
           final email = decodedToken['email'] ?? 'Email no disponible';
-          final nombreUsuarioToken = decodedToken['NombreUsuario'] ?? null;
-
-          // Si el token no tiene NombreUsuario, usamos el valor de AuthServices
-          final nombreUsuario = nombreUsuarioToken ?? authService.userName ?? 'Nombre no disponible';
+          final nombreUsuario = decodedToken['NombreUsuario'] ?? 'Nombre no disponible';
 
           return Center(
             child: Column(
