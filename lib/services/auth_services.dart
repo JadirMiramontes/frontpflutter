@@ -60,35 +60,37 @@ class AuthServices extends ChangeNotifier {
 }
 
 
-  Future<String?> login(String email, String password) async {
-    final Map<String, dynamic> authData = {
-      'Email': email,
-      'Password': password,
-    };
+Future<String?> login(String email, String password) async {
+  final Map<String, dynamic> authData = {
+    'Email': email,
+    'Password': password,
+  };
 
-    final url = Uri.http(_baseUrl, '/api/Cuentas/Login');
+  final url = Uri.http(_baseUrl, '/api/Cuentas/Login');
 
-    final resp = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(authData),
-    );
+  final resp = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode(authData),
+  );
 
-    if (resp.statusCode == 200) {
-      final decodeResp = json.decode(resp.body);
-      if (decodeResp.containsKey('token')) {
-        await storage.write(key: 'token', value: decodeResp['token']);
-        _userName = decodeResp['userName'] ?? 'Usuario'; // Recupera el nombre de usuario si está presente
-        notifyListeners();
-        return null;
-      }
-    } else if (resp.statusCode == 400) {
-      final errorResponse = json.decode(resp.body);
-      return errorResponse['Error'] ?? "Credenciales incorrectas.";
+  if (resp.statusCode == 200) {
+    final decodeResp = json.decode(resp.body);
+    if (decodeResp.containsKey('token')) {
+      await storage.write(key: 'token', value: decodeResp['token']);
+      _userName = decodeResp['userName'] ?? 'Usuario'; // Por si en algún momento se añade.
+      notifyListeners();
+      return null;
     }
-
-    return "Ocurrió un error inesperado. Intenta de nuevo.";
+  } else if (resp.statusCode == 400) {
+    final errorResponse = json.decode(resp.body);
+    return errorResponse['Error'] ?? "Credenciales incorrectas.";
   }
+
+  return "Ocurrió un error inesperado. Intenta de nuevo.";
+}
+
+
 
   Future<String> readToken() async {
     return await storage.read(key: 'token') ?? '';

@@ -44,7 +44,7 @@ class _LoginFormState extends State<_LoginForm> {
     return Center(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: SingleChildScrollView( // Añadido para hacer scrolleable el contenido
+        body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -62,14 +62,14 @@ class _LoginFormState extends State<_LoginForm> {
                   height: size.height * 0.05,
                   alignment: Alignment.center,
                 ),
+                // Campo para Email
                 TextFormField(
                   autocorrect: false,
-                  keyboardType: TextInputType.emailAddress,
                   controller: _emailController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: 'ejemplo@gmail.com',
-                    labelText: 'CORREO ELECTRONICO',
+                    labelText: 'CORREO ELECTRÓNICO',
                     labelStyle: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
@@ -78,20 +78,16 @@ class _LoginFormState extends State<_LoginForm> {
                     hintStyle: const TextStyle(color: Colors.white70),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.white)
+                      borderSide: const BorderSide(color: Colors.white),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Colors.orange, width: 2.0),
                     ),
                   ),
-                  validator: (value) {
-                    String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                    RegExp regExp = RegExp(pattern);
-                    return regExp.hasMatch(value ?? '') ? null : 'El valor ingresado no es un correo válido';
-                  },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
+                // Campo para Contraseña
                 TextFormField(
                   autocorrect: false,
                   controller: _passwordController,
@@ -108,7 +104,7 @@ class _LoginFormState extends State<_LoginForm> {
                     hintStyle: const TextStyle(color: Colors.white70),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.white)
+                      borderSide: const BorderSide(color: Colors.white),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -116,7 +112,7 @@ class _LoginFormState extends State<_LoginForm> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
                         color: const Color.fromARGB(255, 253, 246, 246),
                       ),
                       onPressed: () {
@@ -126,34 +122,29 @@ class _LoginFormState extends State<_LoginForm> {
                       },
                     ),
                   ),
-                  validator: (value) {
-                    return (value != null && value.length >= 8) ? null : 'La contraseña debe tener al menos 8 caracteres';
-                  },
                 ),
                 const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    '¿Olvidaste tu contraseña?',
-                    style: TextStyle(color: Color.fromARGB(255, 255, 244, 244)),
-                  ),
-                ),
                 ElevatedButton(
-                  onPressed: loginForm.isLoading ? null : () async {
-                    final authService = Provider.of<AuthServices>(context, listen: false);
+                  onPressed: loginForm.isLoading
+                      ? null
+                      : () async {
+                          loginForm.isLoading = true;
 
-                    final String? errorMessage = await authService.login(
-                      _emailController.text,
-                      _passwordController.text,
-                    );
+                          final authService =
+                              Provider.of<AuthServices>(context, listen: false);
 
-                    if (errorMessage == null) {
-                      Navigator.pushReplacementNamed(context, 'home');
-                    } else {
-                      NotificationsServices.showSnackbar(errorMessage);
-                      loginForm.isLoading = false;
-                    }
-                  },
+                          final String? errorMessage = await authService.login(
+                            _emailController.text,
+                            _passwordController.text,
+                          );
+
+                          if (errorMessage == null) {
+                            Navigator.pushReplacementNamed(context, 'home');
+                          } else {
+                            NotificationsServices.showSnackbar(errorMessage);
+                            loginForm.isLoading = false;
+                          }
+                        },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
                       const Color.fromARGB(253, 252, 147, 11),
@@ -169,24 +160,6 @@ class _LoginFormState extends State<_LoginForm> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color.fromARGB(253, 252, 147, 11),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, 'register', arguments: '');
-                  },
-                  child: const Text(
-                    'Regístrate',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500,
-                      color: Color.fromARGB(255, 250, 253, 247),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
