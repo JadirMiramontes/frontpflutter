@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'checking',
       routes: {
         'login': (_) => LoginScreen(),
-        'register': (_) => RegistroScreen(),
+        'register': (_) => RegisterScreen(),
         'home': (_) => PrincipalScreen(),
         'checking': (_) => CheckAuthScreen(),
         'digimonsearch': (_) => DigimonSearchScreen(),

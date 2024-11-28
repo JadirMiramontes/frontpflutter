@@ -16,10 +16,10 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
   List<String>? _digimonLevels;
   final List<String> _levels = ['Rookie', 'Champion', 'Ultimate', 'Mega'];
   String? _selectedLevel;
-  Set<Map<String, String>> _favoriteDigimons = {};
 
   Future<void> _searchDigimonByName(String name) async {
-    final response = await http.get(Uri.parse('https://digimon-api.vercel.app/api/digimon/name/$name'));
+    final response =
+        await http.get(Uri.parse('https://digimon-api.vercel.app/api/digimon/name/$name'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -38,7 +38,8 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
   }
 
   Future<void> _searchDigimonByLevel(String level) async {
-    final response = await http.get(Uri.parse('https://digimon-api.vercel.app/api/digimon/level/$level'));
+    final response =
+        await http.get(Uri.parse('https://digimon-api.vercel.app/api/digimon/level/$level'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -92,10 +93,7 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Busca tu Digimon favorito',
-                style: TextStyle(fontSize: 24),
-              ),
+              const Text('Busca tu Digimon favorito', style: TextStyle(fontSize: 24)),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
@@ -107,10 +105,7 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Selecciona el nivel del Digimon:',
-                style: TextStyle(fontSize: 20),
-              ),
+              const Text('Selecciona el nivel del Digimon:', style: TextStyle(fontSize: 20)),
               DropdownButton<String>(
                 value: _selectedLevel,
                 hint: const Text('Selecciona un nivel'),
@@ -118,91 +113,37 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
                   setState(() {
                     _selectedLevel = newValue;
                   });
+                  _search();
                 },
-                items: _levels.map<DropdownMenuItem<String>>((String level) {
+                items: _levels.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
-                    value: level,
-                    child: Text(level),
+                    value: value,
+                    child: Text(value),
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: _search,
-                    child: const Text('Buscar'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: _clearFields,
-                    child: const Text('Limpiar'),
-                  ),
-                ],
+              ElevatedButton(
+                onPressed: _search,
+                child: const Text('Buscar'),
               ),
-              if (_digimonNames != null) ...[
-                const SizedBox(height: 20),
-                ...List.generate(_digimonNames!.length, (index) {
-                  final name = _digimonNames![index];
-                  final isFavorite = _favoriteDigimons.any((d) => d['name'] == name);
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Nombre: $name',
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                isFavorite ? Icons.favorite : Icons.favorite_border,
-                                color: isFavorite ? Colors.red : Colors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  if (isFavorite) {
-                                    _favoriteDigimons.removeWhere((d) => d['name'] == name);
-                                  } else {
-                                    _favoriteDigimons.add({
-                                      'name': name,
-                                      'level': _digimonLevels![index],
-                                      'img': _digimonImages![index]
-                                    });
-                                  }
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        if (_digimonLevels != null) ...[
-                          Text(
-                            'Nivel: ${_digimonLevels![index]}',
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                        ],
-                        if (_digimonImages != null) ...[
-                          Image.network(_digimonImages![index]),
-                          const SizedBox(height: 10),
-                        ],
-                      ],
+              const SizedBox(height: 20),
+              _digimonNames == null || _digimonNames!.isEmpty
+                  ? const Text('No se encontraron Digimons')
+                  : Column(
+                      children: List.generate(
+                        _digimonNames!.length,
+                        (index) {
+                          return ListTile(
+                            title: Text(_digimonNames![index]),
+                            subtitle: Text(_digimonLevels![index] ?? 'Nivel desconocido'),
+                            leading: Image.network(_digimonImages![index] ?? ''),
+                          );
+                        },
+                      ),
                     ),
-                  );
-                }),
-              ],
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(context, _favoriteDigimons.toList());
-        },
-        child: const Icon(Icons.arrow_back),
-        backgroundColor: Color.fromARGB(253, 252, 147, 11),
       ),
     );
   }

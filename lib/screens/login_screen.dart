@@ -133,8 +133,9 @@ class _LoginFormState extends State<_LoginForm> {
                           final authService =
                               Provider.of<AuthServices>(context, listen: false);
 
+                          // Cambiar el correo por el nombre de usuario
                           final String? errorMessage = await authService.login(
-                            _emailController.text,
+                            _emailController.text, // Usar el email aquí como 'UserName'
                             _passwordController.text,
                           );
 
@@ -146,9 +147,7 @@ class _LoginFormState extends State<_LoginForm> {
                           }
                         },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color.fromARGB(253, 252, 147, 11),
-                    ),
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(253, 252, 147, 11)),
                   ),
                   child: const Text(
                     'Iniciar sesión',
@@ -160,6 +159,16 @@ class _LoginFormState extends State<_LoginForm> {
                   ),
                 ),
                 const SizedBox(height: 16),
+                // Botón para navegar a la pantalla de registro
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'register');
+                  },
+                  child: const Text(
+                    '¿No tienes una cuenta? Regístrate',
+                    style: TextStyle(color: Color.fromARGB(255, 255, 244, 244)),
+                  ),
+                ),
               ],
             ),
           ),
