@@ -21,6 +21,20 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     _favoritesFuture = FavoritesService().getFavorites(widget.userEmail);
   }
 
+  // Método para eliminar un Digimon de favoritos
+  Future<void> _removeFavorite(int favoriteId) async {
+    try {
+      await FavoritesService().removeFavorite(favoriteId, widget.userEmail);
+      setState(() {
+        // Actualizamos la lista de favoritos
+        _favoritesFuture = FavoritesService().getFavorites(widget.userEmail);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Digimon eliminado de favoritos')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al eliminar favorito')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +68,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 leading: Image.network(favorite.imageUrl),
                 title: Text(favorite.nameD),
                 subtitle: Text('Nivel: ${favorite.levelD}'),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    _removeFavorite(favorite.id);  // Eliminar el favorito
+                  },
+                ),
               );
             },
           );

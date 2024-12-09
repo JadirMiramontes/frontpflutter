@@ -16,4 +16,15 @@ class FavoritesService {
       throw Exception('Failed to load favorites');
     }
   }
+
+  // Eliminar un favorito
+  Future<void> removeFavorite(int favoriteId, String userEmail) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/$favoriteId?email=$userEmail'),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to remove favorite');
+    }
+  }
 }
