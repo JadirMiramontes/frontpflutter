@@ -233,28 +233,6 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
                         },
                       ),
                     ),
-              ElevatedButton(
-                onPressed: () async {
-                  final email = await authServices.readEmail();
-                  if (email != null) {
-                    // Navegar a la pantalla de favoritos, pasando tanto el userEmail como favoriteDigimons
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FavoritesScreen(
-                          userEmail: email,          // Pasa el email del usuario
-                          favoriteDigimons: _favoriteDigimons,  // Pasa la lista de favoritos
-                        ),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Debes iniciar sesión para ver tus favoritos')),
-                    );
-                  }
-                },
-                child: const Text('Ver Favoritos'),
-              ),
             ],
           ),
         ),

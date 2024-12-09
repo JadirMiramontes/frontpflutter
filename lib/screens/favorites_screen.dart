@@ -40,6 +40,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Favoritos'),
+        backgroundColor: const Color.fromARGB(253, 252, 147, 11),
       ),
       body: FutureBuilder<List<Favoritos>>(
         future: _favoritesFuture,

@@ -82,7 +82,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.orange, width: 2.0),
+                      borderSide: const BorderSide(color: Color.fromARGB(251, 247, 22, 255), width: 2.0),
                     ),
                   ),
                 ),
@@ -107,7 +107,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.orange, width: 2.0),
+                      borderSide: const BorderSide(color: Color.fromARGB(251, 247, 22, 255), width: 2.0),
                     ),
                   ),
                 ),
@@ -133,7 +133,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.orange, width: 2.0),
+                      borderSide: const BorderSide(color: Color.fromARGB(251, 247, 22, 255), width: 2.0),
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -165,7 +165,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     }
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(253, 252, 147, 11)),
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(251, 247, 22, 255)),
                   ),
                   child: const Text(
                     'Registrarse',
