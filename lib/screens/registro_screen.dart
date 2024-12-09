@@ -36,6 +36,32 @@ class _RegisterFormState extends State<_RegisterForm> {
   final TextEditingController _userNameController = TextEditingController();
   bool _obscurePassword = true;
 
+  // Función para validar el correo electrónico
+  String? _validateEmail(String value) {
+    String pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+    RegExp regex = RegExp(pattern);
+    if (value.isEmpty) {
+      return 'Por favor ingrese un correo electrónico';
+    } else if (!regex.hasMatch(value)) {
+      return 'Por favor ingrese un correo electrónico válido';
+    } else if (!value.endsWith('@gmail.com') && !value.endsWith('@yahoo.com')) {
+      return 'El correo electrónico debe ser de dominio @gmail.com o @yahoo.com';
+    }
+    return null;
+  }
+
+  // Función para validar la contraseña
+  String? _validatePassword(String value) {
+    String pattern = r'^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$';
+    RegExp regex = RegExp(pattern);
+    if (value.isEmpty) {
+      return 'Por favor ingrese una contraseña';
+    } else if (!regex.hasMatch(value)) {
+      return 'Contraseña inválida: debe tener al menos 8 caracteres, incluir caracteres alfanuméricos y caracteres especiales';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -110,6 +136,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                       borderSide: const BorderSide(color: Color.fromARGB(251, 247, 22, 255), width: 2.0),
                     ),
                   ),
+                  validator: (value) => _validateEmail(value!), // Validación del correo
                 ),
                 const SizedBox(height: 10),
                 // Campo para Contraseña
@@ -147,21 +174,37 @@ class _RegisterFormState extends State<_RegisterForm> {
                       },
                     ),
                   ),
+                  validator: (value) => _validatePassword(value!), // Validación de la contraseña
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () async {
-                    final errorMessage = await authService.createUser(
-                      _emailController.text,
-                      _passwordController.text,
-                      _userNameController.text,
-                    );
+                    if (_emailController.text.isEmpty || _validateEmail(_emailController.text) != null) {
+                      NotificationsServices.showSnackbar('El correo electrónico debe ser de dominio @gmail.com o @yahoo.com');
+                      return;
+                    }
 
-                    if (errorMessage == null) {
-                      NotificationsServices.showSnackbar('Registro exitoso.');
-                      Navigator.pushReplacementNamed(context, 'login');
-                    } else {
-                      NotificationsServices.showSnackbar(errorMessage);
+                    if (_passwordController.text.isEmpty || _validatePassword(_passwordController.text) != null) {
+                      NotificationsServices.showSnackbar('Contraseña inválida: debe tener al menos 8 caracteres, incluir caracteres alfanuméricos y caracteres especiales');
+                      return;
+                    }
+
+                    try {
+                      final errorMessage = await authService.createUser(
+                        _emailController.text,
+                        _passwordController.text,
+                        _userNameController.text,
+                      );
+
+                      if (errorMessage == null) {
+                        NotificationsServices.showSnackbar('Registro exitoso.');
+                        Navigator.pushReplacementNamed(context, 'login');
+                      } else {
+                        NotificationsServices.showSnackbar(errorMessage);
+                      }
+                    } catch (e) {
+                      // Capturar el error relacionado con el correo no válido
+                      NotificationsServices.showSnackbar('El nombre de usuario o correo no es valido o se encuentra en uso');
                     }
                   },
                   style: ButtonStyle(

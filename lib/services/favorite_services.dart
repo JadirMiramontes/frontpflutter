@@ -35,7 +35,7 @@
       );
 
       if (response.statusCode != 200) {
-        throw Exception('Error al agregar favorito: ${response.body}');
+        throw Exception('El digimon ya se encuentra en favoritos');
       }
     }
 

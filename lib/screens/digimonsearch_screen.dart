@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/services/auth_services.dart';
 import 'package:front/services/favorite_services.dart';
+import 'package:front/services/notifications_services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -90,6 +91,7 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
     }
   }
 
+  // Integración del código de búsqueda por nombre
   Future<void> _searchDigimonByName(String name) async {
     final response =
         await http.get(Uri.parse('https://digimon-api.vercel.app/api/digimon/name/$name'));
@@ -104,12 +106,17 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
         });
       } else {
         _clearResults();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Digimon no registrado')),
+        );
       }
     } else {
-      throw Exception('Error al buscar el Digimon');
+      //throw Exception('Error al buscar el Digimon');
+      NotificationsServices.showSnackbar("Digimon no registrado");
     }
   }
 
+  // Búsqueda por nivel
   Future<void> _searchDigimonByLevel(String level) async {
     final response =
         await http.get(Uri.parse('https://digimon-api.vercel.app/api/digimon/level/$level'));
