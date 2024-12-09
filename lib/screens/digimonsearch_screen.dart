@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/auth_services.dart';
+import 'package:front/services/favorite_services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'favorites_screen.dart';  // Importa la pantalla de favoritos
 
 class DigimonSearchScreen extends StatefulWidget {
   const DigimonSearchScreen({super.key});
@@ -11,11 +15,80 @@ class DigimonSearchScreen extends StatefulWidget {
 
 class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
   final TextEditingController _controller = TextEditingController();
+  final FlutterSecureStorage storage = FlutterSecureStorage();
+  final AuthServices authServices = AuthServices();
+
   List<String>? _digimonNames;
   List<String>? _digimonImages;
   List<String>? _digimonLevels;
   final List<String> _levels = ['Rookie', 'Champion', 'Ultimate', 'Mega'];
   String? _selectedLevel;
+
+  List<Map<String, dynamic>> _favoriteDigimons = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  // Método para alternar el estado de favorito
+  void _toggleFavorite(Map<String, dynamic> digimon) async {
+    final email = await authServices.readEmail();
+    if (email == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Debes iniciar sesión para agregar favoritos')),
+      );
+      return;
+    }
+
+    setState(() {
+      final existingIndex = _favoriteDigimons.indexWhere(
+        (fav) => fav['name'] == digimon['name'],
+      );
+
+      if (existingIndex != -1) {
+        _favoriteDigimons.removeAt(existingIndex); // Eliminar de favoritos
+        removeFavorite(digimon['name'], email); // Eliminar de la base de datos
+      } else {
+        _favoriteDigimons.add(digimon); // Agregar a favoritos
+        addFavorite(digimon, email); // Guardar en base de datos
+      }
+    });
+  }
+
+  // Agregar favorito a la base de datos
+  Future<void> addFavorite(Map<String, dynamic> digimon, String email) async {
+    try {
+      await FavoritesService().addFavorite(
+        email,
+        digimon['image'],
+        digimon['name'],
+        digimon['level'],
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Digimon agregado a favoritos')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al agregar favorito: $e')),
+      );
+    }
+  }
+
+  // Eliminar favorito de la base de datos
+  Future<void> removeFavorite(String digimonName, String email) async {
+    try {
+      final favoriteId = await FavoritesService().getFavoriteIdByName(digimonName, email);
+      await FavoritesService().removeFavoriteById(favoriteId, email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Digimon eliminado de favoritos')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al eliminar favorito: $e')),
+      );
+    }
+  }
 
   Future<void> _searchDigimonByName(String name) async {
     final response =
@@ -133,14 +206,55 @@ class _DigimonSearchScreenState extends State<DigimonSearchScreen> {
                       children: List.generate(
                         _digimonNames!.length,
                         (index) {
+                          final digimon = {
+                            'name': _digimonNames![index],
+                            'image': _digimonImages![index],
+                            'level': _digimonLevels![index],
+                          };
+                          final isFavorite = _favoriteDigimons.any(
+                            (fav) => fav['name'] == digimon['name'],
+                          );
                           return ListTile(
-                            title: Text(_digimonNames![index]),
-                            subtitle: Text(_digimonLevels![index] ?? 'Nivel desconocido'),
-                            leading: Image.network(_digimonImages![index] ?? ''),
+                            title: Text(digimon['name'] ?? 'Nombre desconocido'),
+                            subtitle: Text(digimon['level'] ?? 'Nivel desconocido'),
+                            leading: Image.network(
+                              digimon['image'] ?? 'https://via.placeholder.com/150',
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(
+                                isFavorite ? Icons.favorite : Icons.favorite_border,
+                                color: isFavorite ? Colors.red : null,
+                              ),
+                              onPressed: () {
+                                _toggleFavorite(digimon);
+                              },
+                            ),
                           );
                         },
                       ),
                     ),
+              ElevatedButton(
+                onPressed: () async {
+                  final email = await authServices.readEmail();
+                  if (email != null) {
+                    // Navegar a la pantalla de favoritos, pasando tanto el userEmail como favoriteDigimons
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FavoritesScreen(
+                          userEmail: email,          // Pasa el email del usuario
+                          favoriteDigimons: _favoriteDigimons,  // Pasa la lista de favoritos
+                        ),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Debes iniciar sesión para ver tus favoritos')),
+                    );
+                  }
+                },
+                child: const Text('Ver Favoritos'),
+              ),
             ],
           ),
         ),
